@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <head>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+    <script src='jquery.simplemodal.1.4.2.min.js'></script>
+    <script src='mustache.js'></script>
+
+    <style>
+      body, p, img, h1, h2, h3, h4, h5, h6 {
+        padding: 0;
+        margin: 0;
+      }
+
+      #container {
+        width: 681px;
+      }
+      
+      #student_container {
+        float: left;
+      }
+
+      .thumbnail {
+        margin: 2px;
+      }
+
+      .overlay {
+        display: none;
+      }
+
+      #simplemodal-container {
+        background-color: #fdfdfd;
+        border: 1px solid #dddeee;
+        padding: 5px;
+      }
+
+      #simplemodal-container a.modalCloseImg {
+        background:url(media/x.png) no-repeat; /* adjust url as required */
+        width:25px;
+        height:29px;
+        display:inline;
+        z-index:3200;
+        position:absolute;
+        top:-15px;
+        right:-16px;
+        cursor:pointer;
+      }
+
+      .centered-content {
+        text-align: center;
+      }
+
+      .donate {
+        text-align: center;
+        margin: 15px 0 0 0;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+    <div id='container'>
+      <!-- populated with the data below -->
+    </div> <!-- /container -->
+
+    <script>
+
+      var data = {
+        students: [
+          {
+            name: 'Vikas Katheria'
+            , bio: 'favorite movie: dark knight, favorite band: the smiths'
+            , thumbnail: 'media/student-b-thumb.png'
+            , large_photo: 'media/student-b-large.png'
+          }
+          , {
+            name: 'Ronak Patel'
+            , bio: 'favorite movie: amelie, favorite band: sufjan stevens'
+            , thumbnail: 'media/student-c-thumb.png'
+            , large_photo: 'media/student-c-large.png'
+          }
+          , {
+            name: 'Dhaval Jani'
+            , bio: 'favorite movie: fitzcarraldo, favorite band: wilco'
+            , thumbnail: 'media/student-d-thumb.png'
+            , large_photo: 'media/student-d-large.png'
+          }
+        ]
+      };
+
+      var student_list_template = 
+        "<div id='student_list'>"
+          + "{{#students}}"
+          + "<div id='student_container'>"
+            + "<img class='thumbnail' src='{{thumbnail}}' onclick='show_overlay($(this))' />"
+            + "<div class='overlay'>"
+              + "<table><tr>"
+                + "<td><div class='centered-content'>"
+                  + "<img class='photo' src='{{large_photo}}' />"
+                + "</div></td>"
+                + "<td style='vertical-align: top'>"
+                  + "<h4 class='name'>{{name}}</h4>"
+                  + "<p class='bio'>{{bio}}</p>"
+
+                  + "<div class='donate'>"
+                    + "<p>Sponsor a child for $50 a year</p>"
+                    + '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" enctype="application/x-www-form-urlencoded">'
+                      + '<input type="hidden" name="cmd" value="_s-xclick" />'
+                      + '<input type="hidden" name="hosted_button_id" value="GDT9QPHS2J2KC" />'
+                      + '<input type="image" name="submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal - The safer, easier way to pay online!" />'
+                    + "</form>"
+                  + "</div>"
+                + "</td>"
+              + "</tr></table>"
+            + "</div>"
+          + "</div>"   // /student-container
+          + "{{/students}}"
+        + "</div>"; // /student-list
+
+
+      var show_overlay = function(thumbnail) {
+        $.modal(
+          thumbnail.siblings('.overlay').html()
+          , {
+            overlayClose: true
+            , opacity: 30
+            , overlayCss: {
+              backgroundColor: '#fff'
+            }
+          }
+        );
+      }
+
+      $(function() {
+        // populate the page
+        var html = Mustache.to_html(student_list_template, data);
+        $('#container').append(html);
+      });
+
+    </script>
+
+  </body>
+
+</html>
